@@ -1,6 +1,6 @@
 package Data::BT::PhoneBill;
 
-$VERSION = '0.94';
+$VERSION = '0.95';
 
 =head1 NAME
 
@@ -77,10 +77,26 @@ The 'type' of call - e.g. "DD Local", "DD International".
 
 The cost of the call, before any discounts are applied, in pence.
 
+=head2 chargecard
+
+Any chargecard number used make the call.
+
+=head2 installation
+
+The phone number from which the call was placed.
+
+=head2 line
+
+The line (if a secondary line with the same number is installed) from
+which the call was placed.
+
+=head2 rebate
+
+Any rebates applied to the call.
+
 =cut
 
 use strict;
-use HTML::TableExtract;
 use Text::CSV_XS;
 use IO::File;
 
@@ -91,7 +107,11 @@ use overload
 sub new {
   my ($class, $file) = @_;
   my $fh = new IO::File $file, "r"  or die "Can't read $file: $!\n";
-  my $headers = <$fh>;
+  my $headers;
+  # Downloads now have blank lines at the top
+  while (($headers = <$fh>) !~ /Date/) {
+    die "Couldn't find header line" if eof($fh);
+  }
   bless {
     _fh => $fh,
     _parser => Text::CSV_XS->new,
@@ -120,14 +140,28 @@ package Data::BT::PhoneBill::_Call;
 
 use Date::Simple;
 
+#ChargeCode,InstallationNo,LineNo,ChargeCardNo,Date,Time,Destination,CalledNo,Duration,TxtDirectRebate,Cost
+our @fields = qw(type installation line chargecard _date time destination 
+    _number _duration rebate _cost);
+
+for my $f (@fields) {
+    no strict 'refs';
+    *{$f} = sub { shift->{$f} };
+}
+
 sub new {
   my ($class, @data) = @_;
-  bless \@data => $class;
+  bless { map { $fields[$_] => $data[$_] } 0..$#fields } => $class;
 }
 
 sub date {
   my @parts = split /\//, shift->_date;
   return Date::Simple->new(@parts[2,1,0]);
+}
+
+sub number {
+  my $num = shift->_number;
+  $num =~ s/\s+$//; $num;
 }
 
 sub duration { 
@@ -136,14 +170,6 @@ sub duration {
 }
 
 sub cost { shift->_cost * 100 }
-
-sub _date       { shift->[0] }
-sub time        { shift->[1] }
-sub destination { shift->[2] }
-sub number      { shift->[3] }
-sub type        { shift->[4] }
-sub _duration   { shift->[5] }
-sub _cost       { shift->[6] }
 
 1;
 

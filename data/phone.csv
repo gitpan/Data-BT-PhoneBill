@@ -1,4 +1,7 @@
-Date,Time,Destination,Number,Type,Duration,Cost
-05/09/2001,16:49,Belfast,028 9037 2237,DD Local,00:04:55,0.165
-17/09/2001,11:06,,123,DD Other,00:00:01,0.085
-19/09/2001,17:51,Nat Rate,0870 6070222,DD Other,01:08:02,3.540
+
+
+
+ChargeCode,InstallationNo,LineNo,ChargeCardNo,Date,Time,Destination,CalledNo,Duration,TxtDirectRebate,Cost
+Mobile,01865723018  ,,,12/09/2003,23:00,Mobile Phone,07939 XXYYZZ      ,0000:00:37,           0.000,           0.088
+Ntnl,01865723018  ,,,12/09/2003,23:01,Stirling,01786 XXYYZZ      ,0000:25:56,           0.000,           0.871
+Mobile,01865723018  ,,,13/09/2003,12:53,Mobile Phone,07801 XXYYZZ      ,0000:00:08,           0.000,           0.042

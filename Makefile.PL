@@ -7,7 +7,6 @@ WriteMakefile(
     'Test::More' => 0.17,
     'Text::CSV_XS' => 0,
     'Date::Simple' => 0,
-    'HTML::TableExtract' => 0,
     'IO::File' => 0,
 
   }, 
