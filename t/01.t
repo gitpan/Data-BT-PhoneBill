@@ -8,7 +8,7 @@ ok my $bill = Data::BT::PhoneBill->new($filename), "New phone bill";
 isa_ok $bill => Data::BT::PhoneBill;
 
 {
-  ok my $call = <$bill>, "Get first call";
+  ok my $call = $bill->next_call, "Get first call";
   isa_ok $call => Data::BT::PhoneBill::_Call;
   is $call->time, "23:00", "time";
   is $call->destination, "Mobile Phone", "destination";

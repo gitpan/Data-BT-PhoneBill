@@ -1,6 +1,6 @@
 package Data::BT::PhoneBill;
 
-$VERSION = '0.95';
+$VERSION = '0.96';
 
 =head1 NAME
 
@@ -19,7 +19,7 @@ Data::BT::PhoneBill - Parse a BT Phone Bill from their web site
 =head1 DESCRIPTION
 
 This module provides an interface for querying your BT phone bill,
-as produced from their "View My Bill" service at www.bt.com
+as produced from their "View My Bill" service at http://www.bt.com/
 
 You should use their "Download Calls" option to save your bill as a CSV
 file, and then feed it to this module.
@@ -56,9 +56,9 @@ A string representing the time of the call in the 24-hr format 'hh:mm'.
 
 =head2 destination
 
-A string that for local and national calls this will usually be the
+A string that for local and national calls will usually be the
 town. However this can also contain things like "Premium Rate", "Local
-Rate" etc for 'non-geogrpahic' calls.
+Rate" etc for 'non-geographic' calls.
 
 =head2 number
 
@@ -87,8 +87,8 @@ The phone number from which the call was placed.
 
 =head2 line
 
-The line (if a secondary line with the same number is installed) from
-which the call was placed.
+The line from which the call was placed (if a secondary line with the
+same number is installed).
 
 =head2 rebate
 
@@ -173,18 +173,20 @@ sub cost { shift->_cost * 100 }
 
 1;
 
+=head1 AUTHOR
+
+Tony Bowden, E<lt>kasei@tmtm.comE<gt> with improvements from Simon
+Cozens E<lt>simon@kasei.comE<gt>.
+
 =head1 FEEDBACK
 
 If you find this module useful, or have any comments, suggestions or
-improvements, please let me know.
+improvements, please let me know via the CPAN RT interface at
+bug-Data-BT-PhoneBill@rt.cpan.org
 
-=head1 AUTHOR
+=head1 LICENSE
 
-Tony Bowden, E<lt>kasei@tmtm.comE<gt>.
-
-=head1 COPYRIGHT
-
-Copyright (C) 2001 Tony Bowden. All rights reserved.
+Copyright (C) 2001-2003 Tony Bowden. All rights reserved.
 
 This module is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
