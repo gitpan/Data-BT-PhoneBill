@@ -1,6 +1,6 @@
 package Data::BT::PhoneBill;
 
-$VERSION = '0.91';
+$VERSION = '0.92';
 
 =head1 NAME
 

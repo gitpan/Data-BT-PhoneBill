@@ -1,5 +1,8 @@
 Revision history 
 
+0.92  Mon Dec 10 2001
+        - Fixed the dependencies in the Makefile
+
 0.91  Mon Dec 10 2001
         - Created this
 
