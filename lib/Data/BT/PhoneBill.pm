@@ -1,6 +1,6 @@
 package Data::BT::PhoneBill;
 
-$VERSION = '0.92';
+$VERSION = '0.93';
 
 =head1 NAME
 
@@ -12,7 +12,7 @@ Data::BT::PhoneBill - Parse a BT Phone Bill from their web site
 
   while (my $call = $bill->next_call) {
     print $call->date, $call->time, $call->destination,
-          $call->number, $call->duration, $call->cost;
+          $call->number, $call->duration, $call->type, $call->cost;
     }
   }
 
@@ -36,12 +36,12 @@ Parses the bill stored in $filename.
 
   while (my $call = $bill->next_call) {
     print $call->date, $call->time, $call->destination,
-          $call->number, $call->duration, $call->cost;
+          $call->number, $call->duration, $call->type, $call->cost;
     }
   }
 
 Each time you call $bill->next_call it will return a
-Data::BT::PhoneBill::Call object representing a telephone call (or false
+Data::BT::PhoneBill::_Call object representing a telephone call (or false
 when there are no more to read)
 
 Each Call object has the following methods defined:
@@ -69,6 +69,10 @@ appears on the bill.
 
 The length of the call in seconds.
 
+=head2 type
+
+The 'type' of call - e.g. "DD Local", "DD International".
+
 =head2 cost
 
 The cost of the call, before any discounts are applied, in pence.
@@ -80,7 +84,9 @@ use HTML::TableExtract;
 use Text::CSV_XS;
 use IO::File;
 
-use overload '<>' => \&next_call;
+use overload 
+ '<>' => \&next_call,
+ fallback => 1;
 
 sub new {
   my ($class, $file) = @_;
@@ -101,7 +107,7 @@ sub next_call {
   my $line = <$fh>;
   return unless defined $line;
   if ($self->csv->parse($line)) {
-    return Data::BT::PhoneBill::Call->new($self->csv->fields)
+    return Data::BT::PhoneBill::_Call->new($self->csv->fields)
   } else {
     warn "Cannot parse: " . $self->csv->error_input . "\n";
     return;
@@ -110,7 +116,7 @@ sub next_call {
 
 # ==================================================================== #
 
-package Data::BT::PhoneBill::Call;
+package Data::BT::PhoneBill::_Call;
 
 use Date::Simple;
 

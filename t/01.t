@@ -1,15 +1,15 @@
 #!/usr/bin/perl -w
 
-use Test::More tests => 29;
+use Test::More tests => 28;
 use Data::BT::PhoneBill;
 
 my $filename = "data/phone.csv";
-my $bill = Data::BT::PhoneBill->new($filename);
+ok my $bill = Data::BT::PhoneBill->new($filename), "New phone bill";
 isa_ok $bill => Data::BT::PhoneBill;
 
 {
   ok my $call = <$bill>, "Get first call";
-  isa_ok $call => Data::BT::PhoneBill::Call;
+  isa_ok $call => Data::BT::PhoneBill::_Call;
   isa_ok $call->date => Date::Simple;
   is $call->date->format, "2001-09-05", "date";
   is $call->time, "16:49", "time";
@@ -22,7 +22,6 @@ isa_ok $bill => Data::BT::PhoneBill;
 
 {
   my $call = <$bill>;
-  isa_ok $call => Data::BT::PhoneBill::Call;
   is $call->date->format, "2001-09-17", "date";
   is $call->time, "11:06", "time";
   ok !$call->destination, "no destination";
@@ -34,7 +33,6 @@ isa_ok $bill => Data::BT::PhoneBill;
 
 {
   ok my $call = $bill->next_call, "Get third call";
-  isa_ok $call => Data::BT::PhoneBill::Call;
   is $call->date->format, "2001-09-19", "date";
   is $call->time, "17:51", "time";
   is $call->destination, "Nat Rate", "no destination";

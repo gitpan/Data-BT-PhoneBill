@@ -1,5 +1,10 @@
 Revision history 
 
+0.93  Tue Dec 11 2001
+        - Made the internal Call module 'private'
+        - added a 'fallback' for overloading
+        - documented the call 'type' method
+
 0.92  Mon Dec 10 2001
         - Fixed the dependencies in the Makefile
 
