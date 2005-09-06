@@ -1,5 +1,9 @@
 Revision history 
 
+1.00  Tue Sep  6 18:54:49 UTC 2005 [Tony Bowden]
+	- Reference perl.com article
+	- Make fh() and csv() methods private
+
 0.96  Nov 13, 2003 [Tony Bowden]
 	- Fixed test failures
 

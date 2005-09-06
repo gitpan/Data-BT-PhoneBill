@@ -1,6 +1,6 @@
 package Data::BT::PhoneBill;
 
-$VERSION = '0.96';
+$VERSION = '1.00';
 
 =head1 NAME
 
@@ -33,6 +33,8 @@ file, and then feed it to this module.
 Parses the bill stored in $filename.
 
 =head1 FETCHING DATA
+
+=head2 next_call
 
   while (my $call = $bill->next_call) {
     print $call->date, $call->time, $call->destination,
@@ -118,18 +120,18 @@ sub new {
   }, $class;
 }
 
-sub fh  { shift->{_fh}     }
-sub csv { shift->{_parser} }
+sub _fh  { shift->{_fh}     }
+sub _csv { shift->{_parser} }
 
 sub next_call {
   my $self = shift;
-  my $fh = $self->fh;
+  my $fh = $self->_fh;
   my $line = <$fh>;
   return unless defined $line;
-  if ($self->csv->parse($line)) {
-    return Data::BT::PhoneBill::_Call->new($self->csv->fields)
+  if ($self->_csv->parse($line)) {
+    return Data::BT::PhoneBill::_Call->new($self->_csv->fields)
   } else {
-    warn "Cannot parse: " . $self->csv->error_input . "\n";
+    warn "Cannot parse: " . $self->_csv->error_input . "\n";
     return;
   }
 }
@@ -175,20 +177,28 @@ sub cost { shift->_cost * 100 }
 
 =head1 AUTHOR
 
-Tony Bowden, E<lt>kasei@tmtm.comE<gt> with improvements from Simon
-Cozens E<lt>simon@kasei.comE<gt>.
+Tony Bowden, with improvements from Simon Cozens 
 
-=head1 FEEDBACK
+=head1 BUGS and QUERIES
 
-If you find this module useful, or have any comments, suggestions or
-improvements, please let me know via the CPAN RT interface at
-bug-Data-BT-PhoneBill@rt.cpan.org
+Please direct all correspondence regarding this module to:
+  bug-Data-BT-PhoneBill@rt.cpan.org
 
-=head1 LICENSE
+=head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2001-2003 Tony Bowden. All rights reserved.
+  Copyright (C) 2001-2005 Tony Bowden.
 
-This module is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License; either version
+  2 of the License, or (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+=head1 SEE ALSO
+
+The Perl.com article on Class::DBI is based around Data::BT::PhoneBill - 
+  http://www.perl.com/pub/a/2002/11/27/classdbi.html
 
 =cut
